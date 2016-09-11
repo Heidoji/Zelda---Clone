@@ -20,6 +20,8 @@ HAUTEUR_EN_TILE = 10
 DIMENSION_SPRITE = 64
 VITESSE_LINK = 5
 
+local interfaceManager = require("interfacemanager")
+local interface
 
 -- Création des listes
 link = {}
@@ -93,9 +95,11 @@ function love.load()
   largeur = love.graphics.getWidth()
   hauteur = love.graphics.getHeight()
   
+  interface = interfaceManager.Init()
+  
   current_map = {}
-  current_map.ligne = 4
-  current_map.colonne = 8
+  current_map.ligne = 9
+  current_map.colonne = 10
   current_map.map = liste_maps[current_map.ligne][current_map.colonne]
   
   link = CreateSprite("link", LARGEUR_EN_TILE / 2 * DIMENSION_SPRITE, HAUTEUR_EN_TILE / 2 * DIMENSION_SPRITE + HAUTEUR_DEPART_MAP, 0, 1, 1, DIMENSION_SPRITE / 2, DIMENSION_SPRITE / 2)
@@ -157,13 +161,11 @@ function love.update(dt)
 end
 
 function love.draw()
-  love.graphics.setColor(100,100,100)
-  love.graphics.rectangle("fill", 11, 11 - 5, 11 * 16, 110)
-  love.graphics.setColor(255,255,255)
-  love.graphics.rectangle("fill", 11 * current_map.colonne, 11 * current_map.ligne - 5, 11, 11)
   local n, m, x
   local y = HAUTEUR_DEPART_MAP
   local coord = {}
+  
+  interfaceManager.Draw()
   
   for n = 1, HAUTEUR_EN_TILE do
     x = 0
