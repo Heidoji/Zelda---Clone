@@ -21,7 +21,6 @@ DIMENSION_SPRITE = 64
 VITESSE_LINK = 5
 
 local interfaceManager = require("interfacemanager")
-local interface
 
 -- Création des listes
 link = {}
@@ -98,9 +97,7 @@ function love.load()
   interface = interfaceManager.Init()
   
   current_map = {}
-  current_map.ligne = 9
-  current_map.colonne = 10
-  current_map.map = liste_maps[current_map.ligne][current_map.colonne]
+  current_map.map = liste_maps[interfaceManager.case[1]][interfaceManager.case[2]]
   
   link = CreateSprite("link", LARGEUR_EN_TILE / 2 * DIMENSION_SPRITE, HAUTEUR_EN_TILE / 2 * DIMENSION_SPRITE + HAUTEUR_DEPART_MAP, 0, 1, 1, DIMENSION_SPRITE / 2, DIMENSION_SPRITE / 2)
 end
@@ -115,8 +112,8 @@ function love.update(dt)
       end
     
     if link.y < HAUTEUR_DEPART_MAP then
-      current_map.ligne = current_map.ligne - 1
-      current_map.map = liste_maps[current_map.ligne][current_map.colonne]
+      interfaceManager.case[1] = interfaceManager.case[1] - 1
+      current_map.map = liste_maps[interfaceManager.case[1]][interfaceManager.case[2]]
       link.y = HAUTEUR_ECRAN - 10 - DIMENSION_SPRITE / 2 
     end
   end
@@ -127,8 +124,8 @@ function love.update(dt)
     end
     
     if link.y > HAUTEUR_ECRAN - 10 - DIMENSION_SPRITE / 2 then
-      current_map.ligne = current_map.ligne + 1
-      current_map.map = liste_maps[current_map.ligne][current_map.colonne]
+      interfaceManager.case[1] = interfaceManager.case[1] + 1
+      current_map.map = liste_maps[interfaceManager.case[1]][interfaceManager.case[2]]
       link.y = HAUTEUR_DEPART_MAP
     end
   end
@@ -140,8 +137,8 @@ function love.update(dt)
     end
     
     if link.x < 10 + DIMENSION_SPRITE / 2 then
-      current_map.colonne = current_map.colonne - 1
-      current_map.map = liste_maps[current_map.ligne][current_map.colonne]
+      interfaceManager.case[2] = interfaceManager.case[2] - 1
+      current_map.map = liste_maps[interfaceManager.case[1]][interfaceManager.case[2]]
       link.x = LARGEUR_ECRAN - 10 - DIMENSION_SPRITE / 2
     end
   end
@@ -153,8 +150,8 @@ function love.update(dt)
     end
     
     if link.x > LARGEUR_ECRAN - 10 - DIMENSION_SPRITE / 2 then
-      current_map.colonne = current_map.colonne + 1
-      current_map.map = liste_maps[current_map.ligne][current_map.colonne]
+      interfaceManager.case[2] = interfaceManager.case[2] + 1
+      current_map.map = liste_maps[interfaceManager.case[1]][interfaceManager.case[2]]
       link.x = 10 + DIMENSION_SPRITE / 2
     end
   end
@@ -182,9 +179,9 @@ function love.draw()
     love.graphics.draw(s.image, s.x, s.y)
   end
   
-  coord = ConvertPixelTile(1, link.x, link.y)
+  coord =  ConvertPixelTile(1, link.x, link.y)
   love.graphics.print("x : "..link.x.." Coord.x : "..coord.x.." y : "..link.y.." Coord.y : "..coord.y.." Ligne : "
-    ..current_map.ligne.." Colonne : "..current_map.colonne)
+    ..interfaceManager.case[1].." Colonne : "..interfaceManager.case[2])
 end
 
 function love.keypressed(key)
